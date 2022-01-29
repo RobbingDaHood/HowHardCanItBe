@@ -1,3 +1,5 @@
+package org.robbingdahood.httpserver;
+
 public class HttpServerConfig {
     private static HttpServerConfig httpServerConfig;
 
