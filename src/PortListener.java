@@ -5,12 +5,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class PortListener {
+    private HttpServerConfig httpServerConfig = HttpServerConfig.getHttpServerConfig();
+
     public void startup() throws IOException {
-        int port = 7777;
+        int port = httpServerConfig.getPort();
         ServerSocket serverSocket = new ServerSocket(port);
         System.out.println("Listen on port " + port);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        ExecutorService executorService = Executors.newFixedThreadPool(httpServerConfig.getThreadPoolSize());
 
         for (; ; ) {
             // wait for a connection
