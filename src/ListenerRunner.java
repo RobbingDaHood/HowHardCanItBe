@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ListenerRunner extends Thread {
-    private Socket remote;
+    private final Socket remote;
 
     public ListenerRunner(Socket remote) {
         this.remote = remote;

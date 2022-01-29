@@ -12,7 +12,6 @@ public class PortListener {
         for (; ; ) {
             // wait for a connection
             Socket remote = serverSocket.accept();
-
             new ListenerRunner(remote).start();
         }
     }
