@@ -5,7 +5,7 @@ import java.util.function.Function;
 
 public class ListenerRunner implements PathObserver {
 
-    public static HttpResponse playersGet(HttpRequest request) {
+    public static GeneralHttpResponse playersGet(HttpRequest request) {
         try {
             System.out.println("Connection, sending data.");
             System.out.println("Method: " + request.getHttpMethod());
@@ -15,7 +15,7 @@ public class ListenerRunner implements PathObserver {
 
             // Send the response
             // Send the headers
-            return HttpResponse.builder()
+            return GeneralHttpResponse.builder()
                     .statusCode(200)
                     .statusMessage("OK")
                     .headers(Map.of(

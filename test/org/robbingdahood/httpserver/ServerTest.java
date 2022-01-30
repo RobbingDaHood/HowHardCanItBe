@@ -31,7 +31,26 @@ class ServerTest {
         in.close();
 
         assertEquals(200, connection.getResponseCode());
+        assertEquals("OK", connection.getResponseMessage());
+        assertEquals("text/html", connection.getHeaderField("Content-Type"));
+        assertEquals("Bot", connection.getHeaderField("Server"));
         assertEquals("<H1>Welcome to the Ultra Mini-WebServer</H2>", body.toString());
+
+        //server.shutdown(); //TODO Should be fixed: Can first be tested when there is a operation that takes a long time; I is okay to just shutdown, but likely you want all threads to shutdown nicely.
+    }
+
+    @Test
+    void startup_not_found() throws IOException {
+        Server server = new Server();
+        server.startup();
+
+        URL url = new URL("http://localhost:7777/players!/");
+        HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.connect();
+
+        assertEquals(404, connection.getResponseCode());
+        assertEquals("NOT FOUND", connection.getResponseMessage());
 
         //server.shutdown(); //TODO Should be fixed: Can first be tested when there is a operation that takes a long time; I is okay to just shutdown, but likely you want all threads to shutdown nicely.
     }

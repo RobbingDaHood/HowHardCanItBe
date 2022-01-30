@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class PathListener {
-    private static List<PathObserver> pathObservers = new ArrayList<>(); //TODO thread safety
+    private final static List<PathObserver> pathObservers = new ArrayList<>(); //TODO thread safety
 
     private PathListener() {
 
@@ -22,8 +22,8 @@ public class PathListener {
                 .map(PathObserver::getPaths)
                 .map(stringFunctionMap -> stringFunctionMap.get(httpRequest.getPath())) //TODO handle query params etc.
                 .filter(Objects::nonNull)
-                .map(httpRequestHttpResponseFunction -> httpRequestHttpResponseFunction.apply(httpRequest))
                 .findFirst()
-                .orElseThrow();
+                .orElse(httpRequest1 -> new NotFoundResponse())
+                .apply(httpRequest);
     }
 }
