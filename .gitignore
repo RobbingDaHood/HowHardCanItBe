@@ -1,6 +1,3 @@
 # Project exclude paths
 /out/
-/target/classes/org/robbingdahood/httpserver/HttpServerConfig.class
-/target/classes/org/robbingdahood/httpserver/ListenerRunner.class
-/target/classes/org/robbingdahood/httpserver/Server.class
-/target/test-classes/org/robbingdahood/httpserver/ServerTest.class
+/target/*

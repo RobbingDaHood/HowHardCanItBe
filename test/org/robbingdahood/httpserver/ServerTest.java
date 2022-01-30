@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -26,7 +25,6 @@ class ServerTest {
         BufferedReader in = new BufferedReader(new InputStreamReader(
                 connection.getInputStream()));
         String inputLine;
-        System.out.println("Write test: ");
         StringBuilder body = new StringBuilder();
         while ((inputLine = in.readLine()) != null)
             body.append(inputLine);
@@ -35,6 +33,6 @@ class ServerTest {
         assertEquals(200, connection.getResponseCode());
         assertEquals("<H1>Welcome to the Ultra Mini-WebServer</H2>", body.toString());
 
-        //server.shutdown(); //TODO Should be fixed
+        //server.shutdown(); //TODO Should be fixed: Can first be tested when there is a operation that takes a long time; I is okay to just shutdown, but likely you want all threads to shutdown nicely.
     }
 }

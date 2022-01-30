@@ -16,15 +16,13 @@ public class ListenerRunner extends Thread {
     public void run() {
         try {
             System.out.println("Connection, sending data.");
-            final BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(remote.getInputStream()));
-            PrintWriter out = new PrintWriter(remote.getOutputStream());
+            HttpRequest request = RequestParser.parse(remote);
+            System.out.println("Method: " + request.getHttpMethod());
+            System.out.println("getHeaders: " + request.getHeaders());
+            System.out.println("getPath: " + request.getPath());
+            System.out.println("getBody: " + request.getBody());
 
-            // Print body
-            String line;
-            while ((line = reader.readLine()) != null && !line.equals("")) {
-                System.out.println(line);
-            }
+            PrintWriter out = new PrintWriter(remote.getOutputStream());
 
             // Send the response
             // Send the headers
