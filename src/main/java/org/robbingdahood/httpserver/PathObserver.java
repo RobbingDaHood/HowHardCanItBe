@@ -1,4 +1,8 @@
 package org.robbingdahood.httpserver;
 
-public class PathObserver {
+import java.util.Map;
+import java.util.function.Function;
+
+public interface PathObserver {
+    Map<String, Function<HttpRequest, HttpResponse>> getPaths();
 }

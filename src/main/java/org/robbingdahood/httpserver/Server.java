@@ -11,6 +11,8 @@ public class Server {
     private boolean shutdown = false;
 
     public void startup() throws IOException {
+        registerPathObservers();
+
         int port = httpServerConfig.getPort();
         ServerSocket serverSocket = new ServerSocket(port);
         System.out.println("Listen on port " + port);
@@ -19,18 +21,28 @@ public class Server {
         Executors.newSingleThreadExecutor().submit(() -> {
             while (!shutdown) {
                 // wait for a connection
-                Socket remote = null;
                 try {
-                    remote = serverSocket.accept();
+                    final Socket remote = serverSocket.accept();
+                    executorService.submit(() -> {
+                        try {
+                            PathListener.triggerObserver(new HttpRequest(remote))
+                                    .sendResponse(remote);
+                        } catch (IOException e) { //TODO hanlde better error handling
+                            e.printStackTrace();
+                        }
+                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                executorService.submit(new ListenerRunner(remote));
             }
         });
     }
 
     public void shutdown() {
         shutdown = true;
+    }
+
+    private void registerPathObservers() {
+        PathListener.addObserver(new ListenerRunner());
     }
 }
