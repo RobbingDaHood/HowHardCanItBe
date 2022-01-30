@@ -1,5 +1,7 @@
 package org.robbingdahood.httpserver;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
@@ -12,11 +14,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ServerTest {
 
-    @Test
-    void startup() throws IOException {
+    @BeforeAll
+    static void setup() throws IOException {
         Server server = new Server();
         server.startup();
+    }
 
+    @AfterAll
+    static void tearDown() {
+        //server.shutdown(); //TODO Should be fixed: Can first be tested when there is a operation that takes a long time; I is okay to just shutdown, but likely you want all threads to shutdown nicely.
+    }
+
+    @Test
+    void startup() throws IOException {
         URL url = new URL("http://localhost:7777/players/");
         HttpURLConnection connection = (HttpURLConnection)url.openConnection();
         connection.setRequestMethod("GET");
@@ -36,14 +46,10 @@ class ServerTest {
         assertEquals("Bot", connection.getHeaderField("Server"));
         assertEquals("<H1>Welcome to the Ultra Mini-WebServer</H2>", body.toString());
 
-        //server.shutdown(); //TODO Should be fixed: Can first be tested when there is a operation that takes a long time; I is okay to just shutdown, but likely you want all threads to shutdown nicely.
     }
 
     @Test
     void startup_not_found() throws IOException {
-        Server server = new Server();
-        server.startup();
-
         URL url = new URL("http://localhost:7777/players!/");
         HttpURLConnection connection = (HttpURLConnection)url.openConnection();
         connection.setRequestMethod("GET");
@@ -51,7 +57,5 @@ class ServerTest {
 
         assertEquals(404, connection.getResponseCode());
         assertEquals("NOT FOUND", connection.getResponseMessage());
-
-        //server.shutdown(); //TODO Should be fixed: Can first be tested when there is a operation that takes a long time; I is okay to just shutdown, but likely you want all threads to shutdown nicely.
     }
 }
